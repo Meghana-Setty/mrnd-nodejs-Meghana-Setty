@@ -43,6 +43,6 @@ router.get('/messages/:id',function(req,res,next){
 	var mesg_no=parseInt(req.body);
 	console.log("id:"+id);
 	if(message_exists!=0)
-	res.send(contact[id].message);
+	res.send(contact[id].message[mesg_no]);
 });
 module.exports = router;

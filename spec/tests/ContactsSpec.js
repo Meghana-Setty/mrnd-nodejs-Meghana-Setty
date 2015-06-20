@@ -3,17 +3,19 @@ describe("Contacts Test Suite", function(){
 
 	//var request = require('request');
 	var request = require('C:/Program Files/nodejs/node_modules/npm/node_modules/request')
-	var base_url = "http://mycontactsvc.com:3000";
+	var base_url = "http://localhost:3000";
 	var contacts_url = base_url + "/contacts";
+	var idCreated;
 
 	describe("hello world", function(){
 
 		it("hello world",function(done){
 		    
 		    request.get(base_url, function(error, response, body){
-
+			//console.log(response.statusCode);
 				expect(response.statusCode).toBe(200);
-				//expect(body).toBe("Hello World");
+			//console.log(body);
+				expect(body).toBe("Hello World");
 
 				done();
 		    });
@@ -22,7 +24,6 @@ describe("Contacts Test Suite", function(){
 	});
 
 	describe("create update contact", function(){
-		var idCreated;
 
 		it("should create contact",function(done){
 
@@ -31,7 +32,7 @@ describe("Contacts Test Suite", function(){
 			contact.lastName = "peri";
 			contact.phone = "23002300";
 
-			console.log(JSON.stringify(contact));
+			//console.log(JSON.stringify(contact));
 		    
 		    request.post({url: contacts_url,
 		    			  body: contact,
@@ -40,7 +41,7 @@ describe("Contacts Test Suite", function(){
 		    		    function(error, response, body){
 
 							expect(response.statusCode).toBe(200);
-							console.log(body);
+//							console.log(body);
 							idCreated = body;
 							done();
 					    });
@@ -55,7 +56,7 @@ describe("Contacts Test Suite", function(){
 		    		    function(error, response, body){
 
 							expect(response.statusCode).toBe(200);
-							console.log(body);
+//							console.log(body);
 							expect(body.firstName).toBe("jagan");
 							done();
 					    });
@@ -72,7 +73,7 @@ describe("Contacts Test Suite", function(){
 		    		    function(error, response, body){
 
 							expect(response.statusCode).toBe(200);
-							console.log(body);
+//							console.log(body);
 							expect(body.firstName).toBe("jagan-updated");
 							expect(body.phone).toBe("23002300");
 							done();
@@ -86,16 +87,38 @@ describe("Contacts Test Suite", function(){
 
 		it("should post message to contact", function(done){
 			//TODO: Write your test case here.
+			var mesg="this is the first message";
+			request.post({
+								url:contacts_url+"/messages/"+idCreated,
+								body:mesg,
+								json:true
+						 },
+						 function(error,response,body){
+								expect(response.statusCode).toBe(200);
+//								console.log(body);
+								expect(body).toBe("this is the first message");
+
+						});
 			done();
 
 		});
 
 		it("should get message for contact", function(done){
 			//TODO: Write your test case here.
+			var mesg_no=0;
+			request.get({
+					url:contacts_url+"/messages/"+idCreated,
+						body:mesg_no,
+						json:true
+						},
+						function(error,response,body){
+							expect(response.statusCode).toBe(200);
+//							console.log(body);
+							expect(body).toBe("[this is the first message]");
+						});
 			done();
 
 		});
 
 	});
-
 });
