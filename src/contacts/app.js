@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var contacts=require('./routes/contacts');
+var filecontacts=require('./routes/filecontacts');
 var app = express();
 
 // view engine setup
@@ -26,6 +27,7 @@ app.use('/', routes);
 app.use('/users', users);
 //TODO: add an app.use for /contacts to route to your contacts object.
 app.use('/contacts', contacts);
+app.use('/filecontacts',filecontacts);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
